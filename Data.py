@@ -5,7 +5,7 @@ import matplotlib.pyplot as plt
 def Get_Data(): 
     file = 'C:\\Users\\gaeta\\Documents\\Code\\Python\\Trading\\DataFile\\bitcoin_2019-1-1_2021-3-2.csv'
     df = pd.read_csv(file) 
-    return df["open"].to_numpy() 
+    return df["Open"].to_numpy() 
 
 def Get_Vector_Legendre(Data, order) : 
     z_fit = np.polynomial.legendre.Legendre.fit(np.linspace(0, len(Data), num=len(Data)), Data, order)
@@ -14,17 +14,17 @@ def Get_Vector_Legendre(Data, order) :
 
 def Get_Data_Points(Data, window_size, step_size) : 
     Data_Matrix = None 
-    for j in range(0, window_size//step_size, grid_size) : 
-       DataPoints = None 
-       for i in range(j, len(Data), window_size) : 
-           D = np.expand_dims( Data[i : i+window_size], 0 )  
-           if DataPoints == None : 
-               DataPoints = D 
+    for j in range(0, window_size//step_size, step_size) : 
+        DataPoints = None 
+        for i in range(j, len(Data), window_size) : 
+            D = np.expand_dims( Data[i : i+window_size], 0 )  
+            if DataPoints == None : 
+                DataPoints = D 
             else : 
-               np.concatenate([DataPoints, D], axis=0, out=DataPoints)  
+                np.concatenate([DataPoints, D], axis=0, out=DataPoints)  
 
     DP = np.expand_dims(DataPoints, 0)
-    if Data_Matrix = None : 
+    if Data_Matrix == None : 
         Data_Matrix = DP 
     else : 
         np.concatenate([Data_Matrix, DP ], axis=0, out=Data_Matrix)
@@ -55,7 +55,7 @@ def Creation(Data_Matrix, order, grid_size) :
                     np.concatenate([Grid_Matrix, np.expand_dims(v, 0)], axis=0, out=Grid_Matrix) 
 
                 node_vector.append(0) 
-                Edge_Matrix = np.pad(Edge_Matrix, ((0, previous_k - Edge_Matrix.shape(0)), (0, k - Edge_Matrix.shape(1)) )), "constant", constant_values=(0))
+                Edge_Matrix = np.pad(Edge_Matrix, ((0, previous_k - Edge_Matrix.shape(0)), (0, k - Edge_Matrix.shape(1)) ), "constant", constant_values=(0)) 
             else : 
                node_vector[k] += 1
                Edge_Matrix[previous_k, k] += 1 
@@ -95,3 +95,5 @@ def main() :
     plt.plot(test[1, :], lable="truth")
     plt.legend(loc="upper right")
     plt.show()
+
+main() 
